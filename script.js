@@ -67,11 +67,10 @@
                 uniqueCategories.push(category);
             };
         });
-        // Loop over unique categories to update categories in html
-        uniqueCategories.forEach(category => {
-            let childNode = `<option>${category.toLowerCase()}</option>`;
-            selectCategory.innerHTML+= childNode;
-        });
+        const categoryOptionsHTML = uniqueCategories.map(category => {
+            return `<option>${category.toLowerCase()}</option>`;
+        }).join('');
+        selectCategory.innerHTML += categoryOptionsHTML;
     };
 
     // Function to display products on products grid
