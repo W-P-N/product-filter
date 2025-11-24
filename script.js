@@ -1,4 +1,15 @@
 (async function () {
+    const state = {
+        allProducts: [],
+        filteredProducts: [],
+        filters: {
+            searchText: '',
+            selectedCategory: 'all',
+            sortValue: 'default'
+        },
+        isLoading: true
+    };
+
     // Get all constant files
     const productGrid = document.getElementById('productGrid');
     const searchProduct = document.getElementById('searchProduct');
@@ -6,9 +17,8 @@
     const sortFilter = document.getElementById('sortFilter');
 
     // Add listeners
-    searchProduct.addEventListener('change', function() {
-        applyFilters();
-    });
+    const debouncedRender = debounce(applyFilters, 300);
+    searchProduct.addEventListener('input', debouncedRender);
     selectCategory.addEventListener('change', function() {
         applyFilters();
     });
@@ -16,7 +26,14 @@
         applyFilters();
     });
 
-    let products = [];
+    // Debounce
+    function debounce(func, delay) {
+        let timeout;
+        return () => {
+            clearInterval(timeout);
+            timeout = setTimeout(func, delay);
+        };
+    };
 
     async function loadProducts() {
         // Get products
@@ -25,7 +42,7 @@
             if(!resp.ok) {
                 throw new Error('Error fetching JSON ' + resp.status);
             };
-            products = await resp.json();
+            state.allProducts = await resp.json();
             console.log("Got products");
         } catch (error) {
             console.log("An error occurred while fetching the JSON file: ", error);
@@ -34,14 +51,14 @@
 
     document.addEventListener('DOMContentLoaded', async() => {
         await loadProducts();
-        displayProducts(products);
+        displayProducts(state.allProducts);
         updateCategories();
     });
 
     // Update categories:
     function updateCategories() {
         const uniqueCategories = [];
-        products.forEach(product => {
+        state.allProducts.forEach(product => {
             let category = product.category;
             if(!uniqueCategories.includes(category)) {
                 uniqueCategories.push(category);
@@ -59,8 +76,9 @@
         // Remove all children
         productGrid.replaceChildren();
         // Show for no products
-        if(products.length === 0){
-            productGrid.innerHTML = '<h3>No products found</h3>'
+        if(products?.length === 0){
+            productGrid.innerHTML = '<h3>No products found</h3>';
+            return;
         };
         // Map over products to create array of HTML strings
         const productsHTML = products.map((product, idx) => {
@@ -84,29 +102,29 @@
 
     // Central function to apply any filters/ searches and sorting.
     function applyFilters() {
-        const searchText = searchProduct.value;
-        const selectedCategory = selectCategory.value;
-        const sortValue = sortFilter.value;
+        state.filters.searchText = searchProduct.value;
+        state.filters.selectedCategory = selectCategory.value;
+        state.filters.sortValue = sortFilter.value;
         
-        let filteredProducts = [...products];
-        if(searchText) {
-            filteredProducts = filteredProducts.filter(product => product?.name.toLowerCase().includes(searchText.toLowerCase()));
+        state.filteredProducts = [...state.allProducts];
+        if(state.filters.searchText) {
+            state.filteredProducts = state.filteredProducts.filter(product => product?.name.toLowerCase().includes(state.filters.searchText.toLowerCase()));
         };
-        if(selectedCategory !== 'all') {
-            filteredProducts = filteredProducts.filter(product => product?.category.toLowerCase() === selectedCategory.toLowerCase());
+        if(state.filters.selectedCategory !== 'all') {
+            state.filteredProducts = state.filteredProducts.filter(product => product?.category.toLowerCase() === state.filters.selectedCategory.toLowerCase());
         };
         
-        switch(sortValue) {
+        switch(state.filters.sortValue) {
             case 'low-to-high':
-                filteredProducts = filteredProducts.sort((a, b) => a.price - b.price);
+                state.filteredProducts = state.filteredProducts.sort((a, b) => a.price - b.price);
                 break;
             case 'high-to-low':
-                filteredProducts = filteredProducts.sort((a, b) => b.price - a.price);
+                state.filteredProducts = state.filteredProducts.sort((a, b) => b.price - a.price);
                 break;
             default:
                 break;
         };
-        displayProducts(filteredProducts); 
+        displayProducts(state.filteredProducts); 
     };
 
 
