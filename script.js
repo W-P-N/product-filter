@@ -15,6 +15,7 @@
     const searchProduct = document.getElementById('searchProduct');
     const selectCategory = document.getElementById('selectCategory');
     const sortFilter = document.getElementById('sortFilter');
+    const loader = document.querySelector('.loader');
 
     // Add listeners
     const debouncedRender = debounce(applyFilters, 300);
@@ -50,7 +51,9 @@
     };
 
     document.addEventListener('DOMContentLoaded', async() => {
+        loader.style.display = 'block';
         await loadProducts();
+        loader.style.display = 'none';
         displayProducts(state.allProducts);
         updateCategories();
     });
