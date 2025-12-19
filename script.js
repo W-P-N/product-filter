@@ -11,10 +11,10 @@
     };
 
     // Get all constant files
-    const productGrid = document.getElementById('productGrid');
-    const searchProduct = document.getElementById('searchProduct');
-    const selectCategory = document.getElementById('selectCategory');
-    const sortFilter = document.getElementById('sortFilter');
+    const productGrid = document.getElementById('product-grid');
+    const searchProduct = document.getElementById('search-product');
+    const selectCategory = document.getElementById('select-category');
+    const sortFilter = document.getElementById('sort-filter');
     const loader = document.querySelector('.loader');
 
     // Add listeners
@@ -85,14 +85,15 @@
         // Map over products to create array of HTML strings
         const productsHTML = products.map((product, idx) => {
             return `
-                <div class="productCard">
+                <div class="product-card">
                     <figure>
-                        <img src="${product?.imageUrl}" alt="${product?.name}" >
-                        <figcaption>${product?.name}</figcaption>
+                        <img src="${product.imageUrl}" alt="${product.name}" sandbox>
                     </figure>
-                    <h3>${product?.name}</h3>
+                    <section>
+                        <h3>${product?.name}</h3>
+                        <h3>Rs ${product?.price}</h3>
+                    </section>
                     <p>${product?.description}</p>
-                    <p>${product?.price}</p>
                     <p>Category: ${product?.category}</p>
                 </div>
             `;

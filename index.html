@@ -4,21 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product Filter</title>
+    <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-    <!-- Input for text based searching -->
-    <input type="text" name="searchProduct" id="searchProduct" placeholder="Search by name...">
-    <select name="selectCategory" id="selectCategory">
-        <option value="all">All</option>
-    </select>
-    <select name="sortFilter" id="sortFilter">
-        <option value="none">None</option>
-        <option value="low-to-high">Low to High</option>
-        <option value="high-to-low">High to Low</option>
-    </select>
-    <main id="productGrid">
-        <div class="loader"></div>
-    </main>
+    <div id="container">
+        <section id="options">
+            <!-- Input for text based searching -->
+            <input type="text" name="search-product" id="search-product" placeholder="Search by name...">
+            <select name="select-category" id="select-category">
+                <option value="all">All</option>
+            </select>
+            <select name="sort-filter" id="sort-filter">
+                <option value="none">None</option>
+                <option value="low-to-high">Low to High</option>
+                <option value="high-to-low">High to Low</option>
+            </select>
+        </section>
+        <main id="product-grid">
+            <div class="loader"></div>
+        </main>
+    </div>
     <script src="./script.js"></script>
 </body>
 </html>

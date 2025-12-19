@@ -11,7 +11,7 @@
     "pickupType": "SSS (single-coil)",
     "neckMaterial": "Maple",
     "bodyMaterial": "Alder",
-    "imageUrl": "https://www.johnsmusic.in/products/fender-player-strat-maple-fingerboard-sss",
+    "imageUrl": "./public/images/FenderPlayerStratocaster.png",
     "description": "Versatile stage guitar with bright single-coil tone. Comfortable modern 'C' neck profile."
   },
   {
@@ -26,7 +26,7 @@
     "pickupType": "SSS",
     "neckMaterial": "Maple",
     "bodyMaterial": "Poplar",
-    "imageUrl": "https://www.johnsmusic.in/products/fender-player-strat-maple-fingerboard-sss",
+    "imageUrl": "./public/images/SquierAffinityStrat.png",
     "description": "Budget-friendly Strat-style guitar for beginners and practice."
   },
   {
